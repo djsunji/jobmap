@@ -22,7 +22,7 @@ import yaml  # noqa: E402
 from classify import classify, employment_type, level, pensum, work_mode  # noqa: E402
 from common import ROOT, Http, log, norm  # noqa: E402
 from geocode import Geocoder  # noqa: E402
-from sources import adzuna, ats, jsonld  # noqa: E402
+from sources import adzuna, ats, careerjet, jsonld  # noqa: E402
 
 CH_BOX = (45.8, 47.9, 5.9, 10.6)  # lat min/max, lon min/max
 
@@ -127,6 +127,10 @@ def main():
     raw: list[dict] = []
     if (cfg.get("adzuna") or {}).get("enabled", True):
         raw += adzuna.fetch(http, cfg.get("adzuna") or {})
+    if (cfg.get("careerjet") or {}).get("enabled", False):
+        raw += careerjet.fetch(http, cfg.get("careerjet") or {})
+    else:
+        log.info("Careerjet ist in sources.yaml ausgeschaltet.")
     raw += ats.fetch(http, cfg.get("ats_companies") or [])
     raw += jsonld.fetch(http, cfg.get("career_sites") or [])
     log.info("Rohdaten: %s Stellen", len(raw))

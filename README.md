@@ -32,8 +32,14 @@ Solange noch keine echten Stellen geladen sind, zeigt die Website Beispieldaten.
    - Name `ADZUNA_APP_ID`, Wert = Application ID
    - Name `ADZUNA_APP_KEY`, Wert = Application Key
 
+### 3b. Careerjet-Schlüssel (optional)
+Als Secret `CAREERJET_API_KEY` speichern. Careerjet ist in `crawler/sources.yaml` zuerst **aus**:
+Die API verlangt bei jeder Anfrage IP und Browser des suchenden Besuchers und ist für Live-Suchen
+gedacht. Frag Careerjet per Mail, ob Jobmap die Resultate nachts abholen und zwischenspeichern darf.
+Wenn ja: bei `careerjet:` `enabled: true` setzen.
+
 ### 4. In `crawler/sources.yaml` deinen Namen eintragen
-Bei `user_agent` `<DEIN-NAME>` durch deinen GitHub-Namen ersetzen. So wissen Websites, wer abfragt.
+Bei `user_agent` und `referer` `<DEIN-NAME>` durch deinen GitHub-Namen ersetzen. So wissen Websites, wer abfragt.
 
 ### 5. Ersten Lauf starten
 **Actions → Stellen aktualisieren → Run workflow**. Nach ein paar Minuten ist `data/jobs.json` gefüllt

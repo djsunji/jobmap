@@ -712,7 +712,7 @@ update();fitRadius();
     $("demoBadge").textContent=JOBS.length.toLocaleString("de-CH")+" echte Stellen"+(when?" · Stand "+when:"");
     $("demoBadge").classList.add("live");
     const src=[...new Set(JOBS.map(j=>j.source).filter(Boolean))];
-    if(src.length){const n=$("srcNote");n.innerHTML="Quellen: "+src.map(x=>x==="Adzuna"?'<a href="https://www.adzuna.ch" target="_blank" rel="noopener">Jobs by Adzuna</a>':esc(x)).join(" · ");n.hidden=false;}
+    if(src.length){const n=$("srcNote");n.innerHTML="Quellen: "+src.map(x=>x==="Adzuna"?'<a href="https://www.adzuna.ch" target="_blank" rel="noopener">Jobs by Adzuna</a>':x==="Careerjet"?'<a href="https://www.careerjet.ch" target="_blank" rel="noopener">Jobs by Careerjet</a>':esc(x)).join(" · ");n.hidden=false;}
     state.selected=null;fillSub();update();
   }catch(e){console.info("Keine echten Stellen geladen:",e);}
 })();

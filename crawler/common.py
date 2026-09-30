@@ -58,14 +58,14 @@ class Http:
             time.sleep(delay - since)
         self._last[host] = time.time()
 
-    def get(self, url: str, *, params=None, robots: bool = False, retries: int = 2, method="GET", json_body=None):
+    def get(self, url: str, *, params=None, robots: bool = False, retries: int = 2, method="GET", json_body=None, auth=None, headers=None):
         if robots and not self.allowed(url):
             log.info("robots.txt verbietet: %s", url)
             return None
         for attempt in range(retries + 1):
             self._wait(url)
             try:
-                r = self.s.request(method, url, params=params, json=json_body, timeout=self.timeout)
+                r = self.s.request(method, url, params=params, json=json_body, auth=auth, headers=headers, timeout=self.timeout)
             except requests.RequestException as e:
                 log.warning("Fehler bei %s: %s", url, e)
                 continue

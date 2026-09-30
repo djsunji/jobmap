@@ -18,7 +18,21 @@ adzuna:
     # - { what: "pflege" }
     # - { where: "Bern" }
 
-# 2) Firmen mit öffentlichem Stellen-Feed im Bewerbungssystem
+# 2) Careerjet – Publisher-API (Schlüssel als GitHub-Secret CAREERJET_API_KEY)
+#    ACHTUNG: Careerjet verlangt pro Anfrage IP und Browser des suchenden Besuchers und ist für
+#    Live-Suchen gedacht. Erst auf "enabled: true" stellen, wenn Careerjet dir schriftlich bestätigt,
+#    dass Jobmap die Resultate nächtlich abholen und zwischenspeichern darf.
+careerjet:
+  enabled: false
+  referer: "https://<DEIN-NAME>.github.io/jobmap/"
+  user_ip: ""                 # von Careerjet vorgegebenen Wert eintragen, falls sie einen nennen
+  locales: [de_CH, fr_CH]     # deutsch- und französischsprachige Schweiz (it_CH ergänzen für Tessin)
+  page_size: 100
+  max_requests: 60
+  locations: [Zürich, Bern, Basel, Genève, Lausanne, Luzern, "St. Gallen", Lugano, Winterthur, Aarau,
+              Fribourg, Neuchâtel, Sion, Chur, Zug, Biel, Thun, Schaffhausen, Solothurn, Olten]
+
+# 3) Firmen mit öffentlichem Stellen-Feed im Bewerbungssystem
 #    ats: greenhouse | lever | smartrecruiters | personio | recruitee
 #    slug: steht in der Adresse der Stellenseite der Firma (siehe README)
 #    Nicht gefundene Einträge werden im Protokoll gemeldet und übersprungen.
@@ -27,7 +41,7 @@ ats_companies: []
   # - { name: "Muster GmbH", ats: recruitee, slug: "mustergmbh", logo: "https://…/logo.png" }
   # - { name: "Demo SA", ats: smartrecruiters, slug: "DemoSA" }
 
-# 3) Karriereseiten mit maschinenlesbaren Inseraten (schema.org JobPosting)
+# 4) Karriereseiten mit maschinenlesbaren Inseraten (schema.org JobPosting)
 #    Entweder eine Sitemap + Muster für Stellen-Adressen, oder direkt eine Liste von Stellen-URLs.
 career_sites: []
   # - name: "Beispiel AG"
