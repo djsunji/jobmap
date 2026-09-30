@@ -1,0 +1,39 @@
+# Einstellungen für den Jobmap-Crawler
+# Nur Quellen eintragen, die das Abholen erlauben (offizielle APIs, öffentliche Feeds, robots.txt erlaubt).
+
+# So stellt sich der Crawler bei Websites vor. <DEIN-NAME> durch deinen GitHub-Namen ersetzen.
+user_agent: "JobmapBot/0.1 (+https://github.com/<DEIN-NAME>/jobmap)"
+delay_seconds: 2          # Pause zwischen zwei Anfragen an dieselbe Website
+max_age_days: 45          # ältere Inserate werden weggelassen
+
+# 1) Adzuna – offizielle Job-API mit Schweizer Stellen (gratis Schlüssel, siehe README)
+adzuna:
+  enabled: true
+  max_days_old: 30
+  max_requests: 40          # pro Lauf; Gratis-Kontingent nicht überschreiten
+  max_pages_per_query: 20   # 50 Stellen pro Seite
+  queries:
+    - {}                    # alle Stellen in der Schweiz, neueste zuerst
+    # Beispiele für gezielte Abfragen:
+    # - { what: "pflege" }
+    # - { where: "Bern" }
+
+# 2) Firmen mit öffentlichem Stellen-Feed im Bewerbungssystem
+#    ats: greenhouse | lever | smartrecruiters | personio | recruitee
+#    slug: steht in der Adresse der Stellenseite der Firma (siehe README)
+#    Nicht gefundene Einträge werden im Protokoll gemeldet und übersprungen.
+ats_companies: []
+  # - { name: "Beispiel AG", ats: personio, slug: "beispiel-ag" }
+  # - { name: "Muster GmbH", ats: recruitee, slug: "mustergmbh", logo: "https://…/logo.png" }
+  # - { name: "Demo SA", ats: smartrecruiters, slug: "DemoSA" }
+
+# 3) Karriereseiten mit maschinenlesbaren Inseraten (schema.org JobPosting)
+#    Entweder eine Sitemap + Muster für Stellen-Adressen, oder direkt eine Liste von Stellen-URLs.
+career_sites: []
+  # - name: "Beispiel AG"
+  #   sitemap: "https://www.beispiel.ch/sitemap.xml"
+  #   include: "/jobs/|/stellen/"
+  #   max_pages: 100
+  # - name: "Muster GmbH"
+  #   urls:
+  #     - "https://www.muster.ch/karriere/stelle-123"
