@@ -227,6 +227,8 @@ form.search .btn{font-size:16px;padding:0 30px}
 .btn-link{display:inline-flex;align-items:center;text-decoration:none}
 .co-img{background:#fff;display:grid;place-items:center;overflow:hidden}
 .co-img img{max-width:38px;max-height:38px;object-fit:contain}
+.jm-city{font-family:var(--f-body);font-size:11px;font-weight:600;color:#44526B;white-space:nowrap;transform:translate(-50%,-140%);text-shadow:0 0 3px #F4F8FC,0 0 3px #F4F8FC}
+.jm-city.big{font-size:12.5px;font-weight:700;color:#0C2240}
 </style>
 </head>
 <body>
@@ -572,11 +574,42 @@ const ATTR_ESRI='Bilder &copy; Esri, Maxar, Earthstar Geographics';
 const esri=(svc,o)=>L.tileLayer("https://server.arcgisonline.com/ArcGIS/rest/services/"+svc+"/MapServer/tile/{z}/{y}/{x}",Object.assign({maxZoom:20,maxNativeZoom:19,attribution:ATTR_ESRI},o||{}));
 // Satellit mit Strassen und Ortsnamen darüber (wie „Hybrid“ bei Google)
 const satellite=L.layerGroup([esri("World_Imagery"),esri("Reference/World_Transportation",{attribution:""}),esri("Reference/World_Boundaries_and_Places",{attribution:""})]);
+
+// Offline-Umriss der Schweiz: springt ein, wenn keine Kartenbilder laden (z. B. in einer Vorschau ohne Internetzugriff)
+const BORDER=[[7.59,47.59],[7.70,47.54],[7.95,47.55],[8.22,47.61],[8.43,47.57],[8.56,47.62],[8.41,47.66],[8.47,47.76],[8.61,47.80],[8.73,47.72],[8.86,47.66],[9.02,47.68],[9.18,47.66],[9.38,47.57],[9.53,47.48],[9.67,47.45],[9.56,47.30],[9.49,47.18],[9.48,47.06],[9.61,47.06],[9.87,47.02],[10.13,46.98],[10.39,47.00],[10.49,46.87],[10.43,46.76],[10.49,46.62],[10.45,46.53],[10.29,46.56],[10.13,46.43],[10.05,46.23],[9.95,46.38],[9.72,46.30],[9.52,46.31],[9.30,46.50],[9.25,46.28],[9.15,46.17],[9.07,45.95],[9.03,45.82],[8.93,45.84],[8.86,45.97],[8.72,46.10],[8.60,46.14],[8.45,46.22],[8.44,46.46],[8.30,46.40],[8.13,46.19],[8.00,46.00],[7.87,45.93],[7.54,45.98],[7.17,45.87],[7.04,45.93],[6.80,46.13],[6.86,46.28],[6.79,46.40],[6.52,46.45],[6.22,46.31],[6.30,46.25],[6.12,46.15],[5.96,46.13],[6.10,46.28],[6.06,46.42],[6.14,46.58],[6.43,46.76],[6.46,46.95],[6.70,47.03],[6.94,47.22],[6.96,47.29],[6.88,47.36],[6.97,47.49],[7.13,47.50],[7.20,47.44],[7.44,47.46],[7.51,47.52],[7.59,47.59]];
+const LAKE_POLYS=[
+  [[6.15,46.21],[6.24,46.30],[6.36,46.40],[6.52,46.46],[6.63,46.51],[6.76,46.48],[6.84,46.46],[6.92,46.40],[6.83,46.38],[6.66,46.40],[6.50,46.39],[6.38,46.36],[6.28,46.31],[6.20,46.25]], // Genfersee
+  [[8.96,47.67],[9.10,47.66],[9.25,47.63],[9.40,47.58],[9.52,47.50],[9.62,47.50],[9.73,47.53],[9.63,47.61],[9.45,47.67],[9.28,47.74],[9.10,47.80],[9.02,47.78],[9.14,47.70],[9.00,47.70]] // Bodensee
+];
+// Schmale Seen als Linien mit Breite in km
+const LAKE_LINES=[
+  {w:5.5,p:[[6.64,46.79],[6.78,46.86],[6.93,46.95],[7.03,46.99]]}, // Neuenburgersee
+  {w:3,p:[[7.10,47.07],[7.18,47.10],[7.24,47.13]]}, // Bielersee
+  {w:2.5,p:[[7.07,46.91],[7.13,46.94]]}, // Murtensee
+  {w:3,p:[[7.64,46.75],[7.74,46.70],[7.84,46.68]]}, // Thunersee
+  {w:2.4,p:[[7.89,46.70],[7.98,46.72],[8.04,46.75]]}, // Brienzersee
+  {w:2.4,p:[[8.31,47.05],[8.40,47.00],[8.47,47.01],[8.52,46.98],[8.60,46.97],[8.61,46.90]]}, // Vierwaldstättersee
+  {w:2.4,p:[[8.47,47.17],[8.50,47.11]]}, // Zugersee
+  {w:2.6,p:[[8.55,47.35],[8.64,47.27],[8.78,47.22],[8.90,47.21],[8.98,47.20]]}, // Zürichsee
+  {w:1.8,p:[[9.10,47.12],[9.22,47.12],[9.32,47.13]]}, // Walensee
+  {w:3,p:[[8.80,46.16],[8.72,46.07],[8.63,45.95],[8.56,45.85],[8.60,45.75]]}, // Lago Maggiore
+  {w:1.6,p:[[8.93,46.00],[9.00,45.98],[9.04,45.94],[8.97,45.93],[8.90,45.96]]}, // Luganersee
+  {w:2,p:[[8.26,47.16],[8.19,47.13]]} // Sempachersee
+];
+const outline=(()=>{
+  const g=L.layerGroup(),ll=pts=>pts.map(p=>[p[1],p[0]]);
+  g.addLayer(L.rectangle([[44,3],[49.5,13]],{stroke:false,fillColor:"#DCE6F2",fillOpacity:1,interactive:false}));
+  g.addLayer(L.polygon(ll(BORDER),{color:"#7F93B2",weight:1.5,fillColor:"#F4F8FC",fillOpacity:1,interactive:false}));
+  LAKE_POLYS.forEach(p=>g.addLayer(L.polygon(ll(p),{stroke:false,fillColor:"#AFCFEA",fillOpacity:1,interactive:false})));
+  LAKE_LINES.forEach(l=>g.addLayer(L.polyline(ll(l.p),{color:"#AFCFEA",weight:Math.max(3,l.w*2),lineCap:"round",lineJoin:"round",interactive:false})));
+  PLACES.filter(p=>p[4]>=3).forEach(p=>g.addLayer(L.marker([p[2],p[3]],{interactive:false,keyboard:false,icon:L.divIcon({className:"jm-city"+(p[4]>=7?" big":""),html:esc(p[0]),iconSize:null})})));
+  return g;})();
 const BASEMAPS=[
   ["Satellit",satellite],
   ["Satellit Schweiz (swisstopo, sehr scharf)",L.tileLayer("https://wmts.geo.admin.ch/1.0.0/ch.swisstopo.swissimage/default/current/3857/{z}/{x}/{y}.jpeg",{maxNativeZoom:19,maxZoom:20,attribution:ATTR_TOPO})],
   ["Strassenkarte",L.tileLayer("https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png",{subdomains:"abcd",maxZoom:20,attribution:ATTR_CARTO})],
   ["Dunkel",L.tileLayer("https://{s}.basemaps.cartocdn.com/rastertiles/dark_all/{z}/{x}/{y}{r}.png",{subdomains:"abcd",maxZoom:20,attribution:ATTR_CARTO})]
+  ,["Umriss (offline)",outline]
 ];
 L.control.layers(Object.fromEntries(BASEMAPS),null,{position:"topright"}).addTo(map);
 // Falls ein Kartendienst nicht lädt, automatisch auf den nächsten wechseln
@@ -584,7 +617,7 @@ BASEMAPS.forEach(([name,layer],i)=>{let ok=0,err=0;
   const src=layer.getLayers?layer.getLayers()[0]:layer;
   src.on("tileload",()=>{ok++;});
   src.on("tileerror",()=>{err++;if(err===6&&ok===0&&map.hasLayer(layer)){const next=BASEMAPS[(i+1)%BASEMAPS.length];
-    map.removeLayer(layer);next[1].addTo(map);const m=$("geoMsg");m.textContent=name+" hat nicht geladen, deshalb wird jetzt "+next[0]+" angezeigt.";m.hidden=false;}});
+    map.removeLayer(layer);next[1].addTo(map);const m=$("geoMsg");m.textContent=next[1]===outline?"Kartenbilder können hier nicht geladen werden. Angezeigt wird ein vereinfachter Umriss der Schweiz.":name+" hat nicht geladen, deshalb wird jetzt "+next[0]+" angezeigt.";m.hidden=false;}});
 });
 // Startkarte: im Dunkelmodus automatisch die dunkle Karte
 const prefersDark=document.documentElement.dataset.theme==="dark"||(document.documentElement.dataset.theme!=="light"&&window.matchMedia("(prefers-color-scheme: dark)").matches);
