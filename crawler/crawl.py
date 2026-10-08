@@ -65,7 +65,8 @@ def salary(r: dict, type_: str):
 
 
 def build(r: dict, geo: Geocoder, now: dt.datetime, max_age: int):
-    title = (r.get("title") or "").strip()
+    title = re.sub(r"\s*[\(\[]?\b[mwfdhx]\s*/\s*[mwfdhx](\s*/\s*[mwfdhx])?\b[\)\]]?", "", (r.get("title") or "")).strip(" -–|,")
+    title = re.sub(r"\s{2,}", " ", title)
     if not title or not r.get("url"):
         return None
     posted = parse_date(r.get("posted"))

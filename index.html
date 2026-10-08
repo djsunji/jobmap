@@ -39,15 +39,15 @@ document.documentElement.setAttribute("data-theme",t);})();</script>
 }
 :root[data-theme="dark"]{
   color-scheme:dark;
-  --bg:#0A1426; --panel:#111F36; --soft:#0E1A2E; --fg:#E8EEF7; --muted:#97A7BF; --line:#22344F; --line-2:#1B2B44;
-  --navy:#E8EEF7; --blue:#3D9BFF; --blue-deep:#7AB8FF; --sky:#16304F; --chip:#1A2B45; --chip-fg:#C9D5E6;
-  --ink-btn:#E8EEF7; --ink-btn-fg:#0A1426;
-  --accent:#3D9BFF; --accent-soft:rgba(61,155,255,.15); --grad:#2F8CFF;
-  --pin:#3D9BFF; --pin-sel:#E8EEF7; --far:#5B6E8E; --bg-2:#0E1A2E;
-  --warn-bg:#3A2C0C; --warn-fg:#F5D48A; --ok-bg:#12321F; --ok-fg:#8EE0A8; --danger:#FF6B7F;
-  --shadow:0 1px 2px rgba(0,0,0,.35),0 10px 30px rgba(0,0,0,.35);
-  --shadow-sm:0 6px 18px rgba(0,0,0,.4); --shadow-lg:0 18px 40px rgba(0,0,0,.5);
-  --mix-text:#fff; --glass:rgba(17,31,54,.95);
+  --bg:#111316; --panel:#1A1D22; --soft:#15171B; --fg:#ECEEF2; --muted:#9AA1AC; --line:#2B3038; --line-2:#23272E;
+  --navy:#ECEEF2; --blue:#4C9DFF; --blue-deep:#8BBEFF; --sky:#1E2733; --chip:#24282F; --chip-fg:#C8CDD5;
+  --ink-btn:#ECEEF2; --ink-btn-fg:#111316;
+  --accent:#4C9DFF; --accent-soft:rgba(76,157,255,.14); --grad:#3D8DF5;
+  --pin:#4C9DFF; --pin-sel:#ECEEF2; --far:#5E6570; --bg-2:#15171B;
+  --warn-bg:#3A2F14; --warn-fg:#F2D38A; --ok-bg:#163223; --ok-fg:#8EDDA8; --danger:#FF7186;
+  --shadow:0 1px 2px rgba(0,0,0,.4),0 10px 30px rgba(0,0,0,.35);
+  --shadow-sm:0 6px 18px rgba(0,0,0,.45); --shadow-lg:0 18px 40px rgba(0,0,0,.55);
+  --mix-text:#fff; --glass:rgba(26,29,34,.95);
 }
 *{box-sizing:border-box}
 html,body{height:100%}
@@ -193,8 +193,8 @@ select option,select optgroup{background-color:var(--panel);color:var(--fg)}
 .leaflet-tooltip{font-family:var(--f-body);border:0;border-radius:10px;box-shadow:var(--shadow-sm);background:var(--panel);color:var(--fg)}
 .leaflet-tooltip-top:before{border-top-color:var(--panel)}
 .leaflet-control-attribution{font-size:11px}
-:root[data-theme="dark"] .leaflet-control-attribution{background:rgba(17,31,54,.85)!important;color:var(--muted)}
-:root[data-theme="dark"] .leaflet-control-scale-line{background:rgba(17,31,54,.85);color:var(--fg);border-color:var(--fg)}
+:root[data-theme="dark"] .leaflet-control-attribution{background:rgba(26,29,34,.85)!important;color:var(--muted)}
+:root[data-theme="dark"] .leaflet-control-scale-line{background:rgba(26,29,34,.85);color:var(--fg);border-color:var(--fg)}
 
 /* Pins, Gruppen, Standort */
 .jm-pin{position:relative}
@@ -250,6 +250,28 @@ select option,select optgroup{background-color:var(--panel);color:var(--fg)}
   .view-fab svg{width:18px;height:18px}
 }
 @media (prefers-reduced-motion:no-preference){.card,.cat-pill,.radius-group button{transition:background-color .15s,border-color .15s}}
+/* Gegen abgeschnittene oder überlaufende Texte */
+.card>div{min-width:0}
+.card h3,.pop-head h3{overflow-wrap:anywhere;hyphens:auto}
+.card .co{overflow:hidden;text-overflow:ellipsis;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow-wrap:anywhere}
+.chip{max-width:100%;overflow:hidden;text-overflow:ellipsis}
+.meta{flex-wrap:wrap}
+.meta .sal{min-width:0;overflow-wrap:anywhere}
+.meta .right{flex:none;margin-left:auto}
+.dist{align-self:start}
+.detail,.desc,.detail dd{overflow-wrap:anywhere;min-width:0}
+.detail dl{grid-template-columns:auto minmax(0,1fr)}
+.pill{min-width:0;max-width:100%}
+.pill select{min-width:0;text-overflow:ellipsis}
+.count{min-width:0;overflow-wrap:anywhere}
+.list-head{flex-wrap:wrap}
+.leaflet-tooltip{white-space:normal;width:max-content;max-width:260px}
+.leaflet-popup-content{max-width:min(330px,70vw)}
+.pop-head>div{min-width:0}
+.pop-foot{flex-wrap:wrap}
+.field input[type=text]{text-overflow:ellipsis}
+.demo{max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.via{display:block;font-size:11px;color:var(--muted);margin-top:4px}
 </style>
 </head>
 <body>
@@ -322,25 +344,25 @@ select option,select optgroup{background-color:var(--panel);color:var(--fg)}
         <button type="button" data-r="200" aria-pressed="false">200 km</button>
       </div>
       <span class="vsep" aria-hidden="true"></span>
-      <label class="pill" hidden><span>Branche</span><select id="fCat"></select></label>
+      <label class="pill"><span>Branche</span><select id="fCat"></select></label>
       <label class="pill sub" id="fSubPill" hidden><span>Berufsgruppe</span><select id="fSub"></select></label>
       <label class="pill"><span>Pensum</span><select id="fPensum">
         <option value="">Alle</option><option value="100-100">100 %</option><option value="80-100">80–100 %</option><option value="50-80">50–80 %</option><option value="0-50">bis 50 %</option></select></label>
       <label class="pill"><span>Anstellung</span><select id="fType">
         <option value="">Alle</option><option>Festanstellung</option><option>Befristet</option><option>Temporär</option><option>Lehrstelle</option><option>Praktikum</option></select></label>
-      <label class="pill"><span>Lohn ab</span><select id="fSalary">
+      <label class="pill" hidden><span>Lohn ab</span><select id="fSalary">
         <option value="0">Egal</option><option value="60000">CHF 60'000</option><option value="80000">CHF 80'000</option><option value="100000">CHF 100'000</option><option value="120000">CHF 120'000</option></select></label>
-      <label class="pill"><span>Erfahrung</span><select id="fLevel">
+      <label class="pill" hidden><span>Erfahrung</span><select id="fLevel">
         <option value="">Alle</option><option>Einstieg</option><option>Berufserfahren</option><option>Kader</option></select></label>
-      <label class="pill"><span>Arbeitsort</span><select id="fMode">
+      <label class="pill" hidden><span>Arbeitsort</span><select id="fMode">
         <option value="">Alle</option><option value="Vor Ort">Vor Ort</option><option value="Hybrid">Hybrid</option><option value="Remote">Remote möglich</option></select></label>
-      <label class="pill"><span>Online seit</span><select id="fDate">
+      <label class="pill" hidden><span>Online seit</span><select id="fDate">
         <option value="999">Egal</option><option value="1">Heute</option><option value="3">3 Tagen</option><option value="7">1 Woche</option><option value="14">2 Wochen</option><option value="30">1 Monat</option></select></label>
       <label class="pill" hidden><input type="checkbox" id="fSaved"> Merkliste</label>
       <button type="button" class="link-btn" id="resetBtn">Filter zurücksetzen</button>
     </div>
 
-    <div class="cats" id="cats" role="group" aria-label="Branche"></div>
+    <div class="cats" id="cats" role="group" aria-label="Branche" hidden></div>
   </section>
 
   <div class="split" id="split" data-view="list">
@@ -356,8 +378,8 @@ select option,select optgroup{background-color:var(--panel);color:var(--fg)}
     <section class="map-pane" aria-label="Karte">
       <div id="map" role="region" aria-label="Karte mit Stellen"></div>
       <div class="map-layer" role="group" aria-label="Kartenansicht">
-        <button type="button" data-base="map" aria-pressed="true">Karte</button>
-        <button type="button" data-base="sat" aria-pressed="false">Satellit</button>
+        <button type="button" data-base="map" aria-pressed="false">Karte</button>
+        <button type="button" data-base="sat" aria-pressed="true">Satellit</button>
       </div>
       <div class="map-ctrl"><button type="button" id="zfit" aria-label="Auf Umkreis zoomen" title="Auf Umkreis zoomen"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="2.5"/></svg></button></div>
       <div class="map-hint" id="mapHint">Klick in die Karte setzt deinen Standort</div>
@@ -511,6 +533,9 @@ function companyLogo(name,logo){
 // ---------- Legende ----------
 let catCounts={};
 function renderCats(){
+  const sum=Object.values(catCounts).reduce((x,y)=>x+y,0);
+  [...$("fCat").options].forEach(o=>{o.textContent=o.value?`${o.value} (${catCounts[o.value]||0})`:`Alle (${sum})`;});
+  return;
   const cur=$("fCat").value,total=Object.values(catCounts).reduce((x,y)=>x+y,0);
   const allIc='<svg class="pi" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 4h6v6H4zM14 4h6v6h-6zM4 14h6v6H4zM14 14h6v6h-6z"/></svg>';
   $("cats").innerHTML=`<button type="button" class="cat-pill" data-cat="" aria-pressed="${!cur}"><span class="lg-ic all">${allIc}</span>Alle Branchen <span class="n">${total}</span></button>`+
@@ -519,7 +544,7 @@ function renderCats(){
 $("cats").addEventListener("click",e=>{const b=e.target.closest(".cat-pill");if(!b)return;$("fCat").value=b.dataset.cat;fillSub();update();});
 
 // ---------- Filter ----------
-const fCat=$("fCat");fCat.innerHTML='<option value="">Alle</option>'+FILTER_CATS.map(c=>`<option>${esc(c)}</option>`).join("");
+const fCat=$("fCat");fCat.innerHTML='<option value="">Alle</option>'+FILTER_CATS.map(c=>`<option value="${esc(c)}">${esc(c)}</option>`).join("");
 const fSub=$("fSub");
 function fillSub(){
   const cat=fCat.value;$("fSubPill").hidden=!cat;
@@ -579,7 +604,7 @@ function cardHTML(j){
       ${j.desc?`<h4>Beschreibung</h4><p class="desc">${esc(j.desc)}</p>`:""}
       ${j.tasks&&j.tasks.length?`<h4>Deine Aufgaben</h4><ul>${j.tasks.map(t=>`<li>${esc(t)}</li>`).join("")}</ul>`:""}
       ${j.req&&j.req.length?`<h4>Dein Profil</h4><ul>${j.req.map(t=>`<li>${esc(t)}</li>`).join("")}</ul>`:""}
-      <div class="actions">${j.url?`<a class="btn btn-primary btn-link" href="${esc(j.url)}" target="_blank" rel="noopener">Zum Inserat</a>`:`<button type="button" class="btn btn-primary" data-apply>Jetzt bewerben</button>`}<button type="button" class="btn btn-ghost" data-focus>Auf Karte zeigen</button></div>
+      <div class="actions">${j.url?`<a class="btn btn-primary btn-link" href="${esc(j.url)}" target="_blank" rel="noopener">${viaText(j)?"Zum Inserat bei "+esc(j.source):"Zur Firma bewerben"}</a>`:`<button type="button" class="btn btn-primary" data-apply>Jetzt bewerben</button>`}<button type="button" class="btn btn-ghost" data-focus>Auf Karte zeigen</button></div>
       <div class="note" data-applynote hidden>Im Entwurf nicht aktiv. Später führt dieser Knopf zum Bewerbungsformular oder zur Firmen-Website.</div>
     </div>`;
   }
@@ -684,7 +709,7 @@ BASEMAPS.forEach(([name,layer],i)=>{let ok=0,err=0;
 });
 // Startkarte: im Dunkelmodus automatisch die dunkle Karte
 const prefersDark=document.documentElement.dataset.theme==="dark"||(document.documentElement.dataset.theme!=="light"&&window.matchMedia("(prefers-color-scheme: dark)").matches);
-setBase("map");
+setBase("sat");
 const cluster=L.markerClusterGroup({showCoverageOnHover:false,maxClusterRadius:45,
   iconCreateFunction:c=>{const n=c.getChildCount(),sz=n<10?32:n<50?38:44;return L.divIcon({html:"<span>"+n+"</span>",className:"jm-cluster",iconSize:L.point(sz+4,sz+4)});}});
 const farLayer=L.layerGroup().addTo(map), canvas=L.canvas({padding:.3});
@@ -710,11 +735,12 @@ function renderMap(){
     homeMarker=L.marker([state.loc.lat,state.loc.lon],{icon:L.divIcon({className:"jm-home",html:"<b></b>",iconSize:[36,36],iconAnchor:[18,18+36*.707]}),zIndexOffset:2000,interactive:false}).addTo(map);
   }
 }
+function viaText(j){return /^(Adzuna|Jooble|Careerjet)$/.test(j.source||"");}
 function popHTML(j){
   const st=salText(j),d=j.dist!=null?(j.dist<10?j.dist.toFixed(1):Math.round(j.dist))+" km":"";
   return `<div class="pop"><div class="pop-head">${companyLogo(j.company,j.logo)}<div><h3>${esc(j.title)}</h3><div class="co">${esc(j.company)}${d?" · "+d:""}</div></div></div>
     <div class="chips" style="--c:${CAT_COLORS[j.cat]}"><span class="chip cat">${esc(j.sub)}</span><span class="chip">${pensumText(j.pensum)}</span><span class="chip">${esc(j.type)}</span></div>
-    <div class="pop-foot"><b>${st?esc(st):"Lohn auf Anfrage"}</b>${j.url?`<a class="btn btn-primary btn-link" href="${esc(j.url)}" target="_blank" rel="noopener">Zum Inserat</a>`:""}</div></div>`;
+    <div class="pop-foot"><b>${st?esc(st):"Lohn auf Anfrage"}</b>${j.url?`<a class="btn btn-primary btn-link" href="${esc(j.url)}" target="_blank" rel="noopener">${viaText(j)?"Inserat bei "+esc(j.source):"Zur Firma"}</a>`:""}</div></div>`;
 }
 function markSelected(prev){
   [prev,state.selected].forEach(id=>{const m=id&&markers.get(id);if(m){m.setIcon(pinIcon(id===state.selected,JOBS[id-1].cat));m.setZIndexOffset(id===state.selected?1000:0);}});
@@ -808,6 +834,7 @@ update();fitRadius();
 // ---------- Echte Stellen laden (data/jobs.json vom Crawler) ----------
 // Funktioniert nur, wenn die Seite über einen Webserver läuft (z. B. GitHub Pages).
 // Fehlt die Datei oder ist sie leer, bleiben die Beispieldaten sichtbar.
+function cleanTxt(t){return String(t||"").replace(/<[^>]*>?/g," ").replace(/^[^<]{0,40}?>/," ").replace(/\b(?:meta|content|name|property|charset|http-equiv|class|style)\s*=\s*"[^"]*"?/gi," ").replace(/&[a-z]+;/gi," ").replace(/\s{2,}/g," ").trim();}
 (async function loadRealJobs(){
   try{
     const r=await fetch("data/jobs.json",{cache:"no-cache"});if(!r.ok)return;
@@ -815,7 +842,8 @@ update();fitRadius();
     const now=Date.now();JOBS.length=0;
     d.jobs.forEach((j,i)=>{if(typeof j.lat!=="number"||typeof j.lon!=="number")return;
       JOBS.push(Object.assign({},j,{id:JOBS.length+1,cat:CAT_COLORS[j.cat]?j.cat:"Weitere Berufe",sub:j.sub||"Andere",
-        days:j.posted?Math.max(0,Math.floor((now-Date.parse(j.posted))/864e5)):0,tasks:j.tasks||[],req:j.req||[]}));});
+        days:j.posted?Math.max(0,Math.floor((now-Date.parse(j.posted))/864e5)):0,tasks:j.tasks||[],req:j.req||[],
+        title:cleanTxt(j.title),company:cleanTxt(j.company),desc:cleanTxt(j.desc)}));});
     const when=d.generated?new Date(d.generated).toLocaleDateString("de-CH"):"";
     $("demoBadge").textContent=JOBS.length.toLocaleString("de-CH")+" echte Stellen"+(when?" · Stand "+when:"");
     $("demoBadge").classList.add("live");

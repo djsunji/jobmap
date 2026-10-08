@@ -102,9 +102,15 @@ def clean_text(value, limit: int | None = None) -> str:
     if not value:
         return ""
     t = html.unescape(str(value))
+    t = re.sub(r"(?is)<(script|style|head)[^>]*>.*?(</\1>|$)", " ", t)
     t = re.sub(r"(?i)<br\s*/?>|</p>|</li>|</h\d>", "\n", t)
     t = TAG_RE.sub(" ", t)
     t = html.unescape(t)
+    t = TAG_RE.sub(" ", t)
+    t = re.sub(r"<[^>]*$", " ", t)                       # abgeschnittenes Tag am Ende („<meta name=…“)
+    t = re.sub(r"^[^<]*?>", lambda m: " " if "=" in m.group(0) or len(m.group(0)) < 40 else m.group(0), t)  # Rest eines Tags am Anfang
+    t = re.sub(r'\b(?:meta|content|name|property|charset|http-equiv|class|style)\s*=\s*"[^"]*"?', " ", t, flags=re.I)
+    t = re.sub(r"[\u0000-\u0008\u000b\u000c\u000e-\u001f\ufffd]", " ", t)
     t = re.sub(r"[ \t ]+", " ", t)
     t = re.sub(r"\s*\n\s*", "\n", t).strip()
     t = re.sub(r"\n{3,}", "\n\n", t)
