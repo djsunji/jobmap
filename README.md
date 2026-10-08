@@ -32,6 +32,10 @@ Solange noch keine echten Stellen geladen sind, zeigt die Website Beispieldaten.
    - Name `ADZUNA_APP_ID`, Wert = Application ID
    - Name `ADZUNA_APP_KEY`, Wert = Application Key
 
+### 3a. Jooble-Schlüssel (optional, empfohlen)
+1. <https://jooble.org/api/about> öffnen und das Formular ausfüllen (Website, Zweck). Den Schlüssel schickt Jooble per E-Mail.
+2. Als Secret `JOOBLE_API_KEY` speichern. Jooble ist in `crawler/sources.yaml` bereits eingeschaltet.
+
 ### 3b. Careerjet-Schlüssel (optional)
 Als Secret `CAREERJET_API_KEY` speichern. Careerjet ist in `crawler/sources.yaml` zuerst **aus**:
 Die API verlangt bei jeder Anfrage IP und Browser des suchenden Besuchers und ist für Live-Suchen

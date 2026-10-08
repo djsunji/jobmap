@@ -22,7 +22,7 @@ import yaml  # noqa: E402
 from classify import classify, employment_type, level, pensum, work_mode  # noqa: E402
 from common import ROOT, Http, log, norm  # noqa: E402
 from geocode import Geocoder  # noqa: E402
-from sources import adzuna, ats, careerjet, jsonld  # noqa: E402
+from sources import adzuna, ats, careerjet, jooble, jsonld  # noqa: E402
 
 CH_BOX = (45.8, 47.9, 5.9, 10.6)  # lat min/max, lon min/max
 
@@ -127,6 +127,8 @@ def main():
     raw: list[dict] = []
     if (cfg.get("adzuna") or {}).get("enabled", True):
         raw += adzuna.fetch(http, cfg.get("adzuna") or {})
+    if (cfg.get("jooble") or {}).get("enabled", True):
+        raw += jooble.fetch(http, cfg.get("jooble") or {})
     if (cfg.get("careerjet") or {}).get("enabled", False):
         raw += careerjet.fetch(http, cfg.get("careerjet") or {})
     else:

@@ -18,6 +18,16 @@ adzuna:
     # - { what: "pflege" }
     # - { where: "Bern" }
 
+# 1b) Jooble – Partner-API (gratis Schlüssel über https://jooble.org/api/about, GitHub-Secret JOOBLE_API_KEY)
+jooble:
+  enabled: true
+  base_url: "https://ch.jooble.org"   # falls Fehler: "https://jooble.org" versuchen
+  results_per_page: 50
+  max_pages_per_location: 5
+  max_requests: 60
+  locations: [Zürich, Bern, Basel, Genève, Lausanne, Luzern, "St. Gallen", Lugano, Winterthur, Aarau,
+              Fribourg, Neuchâtel, Sion, Chur, Zug]
+
 # 2) Careerjet – Publisher-API (Schlüssel als GitHub-Secret CAREERJET_API_KEY)
 #    ACHTUNG: Careerjet verlangt pro Anfrage IP und Browser des suchenden Besuchers und ist für
 #    Live-Suchen gedacht. Erst auf "enabled: true" stellen, wenn Careerjet dir schriftlich bestätigt,
