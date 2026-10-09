@@ -1,1 +1,44 @@
-{}
+{
+"freiburg": {
+"lat": 46.80337,
+"lon": 7.16178,
+"place": "Freiburg",
+"plz": ""
+},
+"kanton bern": {
+"lat": 46.95456,
+"lon": 7.42068,
+"place": "Bern",
+"plz": ""
+},
+"kanton genf": {
+"lat": 46.20456,
+"lon": 6.14246,
+"place": "Genf",
+"plz": ""
+},
+"kanton luzern": {
+"lat": 47.05473,
+"lon": 8.30089,
+"place": "Luzern",
+"plz": ""
+},
+"kanton neuenburg": {
+"lat": 47.02097,
+"lon": 6.94808,
+"place": "Neuenburg",
+"plz": ""
+},
+"kanton waadt": {
+"lat": 46.48495,
+"lon": 6.42,
+"place": "Etoy",
+"plz": ""
+},
+"sankt gallen": {
+"lat": 47.42358,
+"lon": 9.38851,
+"place": "St. Gallen",
+"plz": ""
+}
+}
