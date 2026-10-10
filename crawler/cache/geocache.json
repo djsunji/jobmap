@@ -1,8 +1,26 @@
 {
+"bremgarten": {
+"lat": 46.9782,
+"lon": 7.43418,
+"place": "Bremgarten bei Bern",
+"plz": ""
+},
+"delsberg": {
+"lat": 47.37165,
+"lon": 7.33109,
+"place": "Delsberg",
+"plz": ""
+},
 "freiburg": {
 "lat": 46.80337,
 "lon": 7.16178,
 "place": "Freiburg",
+"plz": ""
+},
+"genf": {
+"lat": 46.20456,
+"lon": 6.14246,
+"place": "Genf",
 "plz": ""
 },
 "kanton bern": {
