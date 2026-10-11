@@ -47,10 +47,22 @@
 "place": "Neuenburg",
 "plz": ""
 },
+"kanton tessin": {
+"lat": 47.31525,
+"lon": 9.34957,
+"place": "Gonten",
+"plz": ""
+},
 "kanton waadt": {
 "lat": 46.48495,
 "lon": 6.42,
 "place": "Etoy",
+"plz": ""
+},
+"kanton zürich": {
+"lat": 47.37721,
+"lon": 8.52731,
+"place": "Zürich",
 "plz": ""
 },
 "sankt gallen": {
