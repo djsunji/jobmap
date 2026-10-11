@@ -272,6 +272,11 @@ select option,select optgroup{background-color:var(--panel);color:var(--fg)}
 .field input[type=text]{text-overflow:ellipsis}
 .demo{max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .via{display:block;font-size:11px;color:var(--muted);margin-top:4px}
+.map-card{position:absolute;left:50%;bottom:16px;transform:translateX(-50%);z-index:1100;width:min(400px,calc(100% - 32px));background:var(--panel);color:var(--fg);border-radius:18px;padding:16px;box-shadow:var(--shadow-lg)}
+.map-card .mc-close{position:absolute;top:8px;right:8px;width:36px;height:36px;border:0;border-radius:10px;background:transparent;color:var(--muted);font-size:22px;line-height:1;cursor:pointer}
+.map-card .mc-close:hover{background:var(--chip)}
+.map-card .pop-head{padding-right:32px}
+.map-card .pop-foot .btn{white-space:nowrap}
 </style>
 </head>
 <body>
@@ -383,6 +388,7 @@ select option,select optgroup{background-color:var(--panel);color:var(--fg)}
       </div>
       <div class="map-ctrl"><button type="button" id="zfit" aria-label="Auf Umkreis zoomen" title="Auf Umkreis zoomen"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="2.5"/></svg></button></div>
       <div class="map-hint" id="mapHint">Klick in die Karte setzt deinen Standort</div>
+      <div class="map-card" id="mapCard" role="dialog" aria-label="Ausgewählte Stelle" hidden></div>
     </section>
   </div>
   <button type="button" class="view-fab" id="viewFab"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 4 3 6.5v13L9 17l6 2.5 6-2.5V4l-6 2.5z"/><path d="M9 4v13M15 6.5v13"/></svg><span id="viewFabLabel">Karte anzeigen</span></button>
@@ -736,6 +742,11 @@ function renderMap(){
   }
 }
 function viaText(j){return /^(Adzuna|Jooble|Careerjet)$/.test(j.source||"");}
+function showMapCard(){
+  const c=$("mapCard"),j=state.selected&&JOBS[state.selected-1];
+  if(!j||!markers.has(j.id)){c.hidden=true;$("mapHint").hidden=false;return;}
+  c.innerHTML=`<button type="button" class="mc-close" aria-label="Schliessen">×</button>`+popHTML(j);c.hidden=false;$("mapHint").hidden=true;
+}
 function popHTML(j){
   const st=salText(j),d=j.dist!=null?(j.dist<10?j.dist.toFixed(1):Math.round(j.dist))+" km":"";
   return `<div class="pop"><div class="pop-head">${companyLogo(j.company,j.logo)}<div><h3>${esc(j.title)}</h3><div class="co">${esc(j.company)}${d?" · "+d:""}</div></div></div>
@@ -744,14 +755,16 @@ function popHTML(j){
 }
 function markSelected(prev){
   [prev,state.selected].forEach(id=>{const m=id&&markers.get(id);if(m){m.setIcon(pinIcon(id===state.selected,JOBS[id-1].cat));m.setZIndexOffset(id===state.selected?1000:0);}});
-  map.closePopup();
+  showMapCard();
   const m=state.selected&&markers.get(state.selected);
-  if(m)cluster.zoomToShowLayer(m,()=>{m.unbindPopup();m.bindPopup(popHTML(JOBS[state.selected-1]),{maxWidth:360,minWidth:290,autoPanPadding:[60,60]}).openPopup();});
+  if(m&&!map.getBounds().pad(-0.15).contains(m.getLatLng()))map.panTo(m.getLatLng());
+  if(m)cluster.zoomToShowLayer(m,()=>{});
 }
 function highlight(id,on){const m=markers.get(id);const e=m&&m.getElement();if(e)e.classList.toggle("hover",on);}
 function fitRadius(){if(radiusCircle)map.fitBounds(radiusCircle.getBounds(),{padding:[16,16]});}
 function fitSwiss(){map.fitBounds([[45.82,5.96],[47.81,10.49]]);}
 function focusJob(j){const m=markers.get(j.id);if(m)cluster.zoomToShowLayer(m,()=>{map.setView(m.getLatLng(),Math.max(map.getZoom(),15));m.openTooltip();});}
+$("mapCard").addEventListener("click",e=>{if(e.target.closest(".mc-close"))select(null,false);});
 $("zfit").onclick=()=>state.loc?fitRadius():fitSwiss();
 map.on("click",e=>{
   const{lat,lng}=e.latlng,np=nearestPlace(lat,lng);
@@ -804,7 +817,7 @@ $("themeBtn").onclick=()=>applyTheme(document.documentElement.getAttribute("data
 applyTheme(document.documentElement.getAttribute("data-theme")==="dark"?"dark":"light",false);
 
 // ---------- Steuerung ----------
-function update(){compute();renderList();renderCats();renderMap();}
+function update(){compute();renderList();renderCats();renderMap();showMapCard();}
 function setLoc(loc){state.loc=loc;$("geoMsg").hidden=true;$("mapHint").textContent="Klick in die Karte verschiebt deinen Standort";update();}
 function setRadius(r){state.radius=r;$("radius").value=r;document.querySelectorAll(".radius-group button").forEach(b=>b.setAttribute("aria-pressed",+b.dataset.r===r));update();}
 document.querySelectorAll(".radius-group button").forEach(b=>b.onclick=()=>{setRadius(+b.dataset.r);fitRadius();});
@@ -843,7 +856,7 @@ function cleanTxt(t){return String(t||"").replace(/<[^>]*>?/g," ").replace(/^[^<
     d.jobs.forEach((j,i)=>{if(typeof j.lat!=="number"||typeof j.lon!=="number")return;
       JOBS.push(Object.assign({},j,{id:JOBS.length+1,cat:CAT_COLORS[j.cat]?j.cat:"Weitere Berufe",sub:j.sub||"Andere",
         days:j.posted?Math.max(0,Math.floor((now-Date.parse(j.posted))/864e5)):0,tasks:j.tasks||[],req:j.req||[],
-        title:cleanTxt(j.title),company:cleanTxt(j.company),desc:cleanTxt(j.desc)}));});
+        title:cleanTxt(j.title).replace(/\s*[\(\[]\s*(?:[mwfdhxa]\s*\/\s*)*[mwfdhxa]\s*[\)\]]|\s*\((?:all genders?|alle|w\/m\/d|m\/w\/d)\)/gi,"").trim(),company:cleanTxt(j.company),desc:cleanTxt(j.desc)}));});
     const when=d.generated?new Date(d.generated).toLocaleDateString("de-CH"):"";
     $("demoBadge").textContent=JOBS.length.toLocaleString("de-CH")+" echte Stellen"+(when?" · Stand "+when:"");
     $("demoBadge").classList.add("live");
