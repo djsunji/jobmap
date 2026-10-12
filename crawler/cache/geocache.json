@@ -23,6 +23,7 @@
 "place": "Genf",
 "plz": ""
 },
+"kanton basel-landschaft": null,
 "kanton bern": {
 "lat": 46.95456,
 "lon": 7.42068,
@@ -33,6 +34,12 @@
 "lat": 46.20456,
 "lon": 6.14246,
 "place": "Genf",
+"plz": ""
+},
+"kanton graubünden": {
+"lat": 47.31525,
+"lon": 9.34957,
+"place": "Gonten",
 "plz": ""
 },
 "kanton luzern": {
