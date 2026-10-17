@@ -1,4 +1,10 @@
 {
+"biel": {
+"lat": 47.14949,
+"lon": 7.26901,
+"place": "Biel/Bienne",
+"plz": ""
+},
 "bremgarten": {
 "lat": 46.9782,
 "lon": 7.43418,
@@ -76,6 +82,12 @@
 "lat": 47.42358,
 "lon": 9.38851,
 "place": "St. Gallen",
+"plz": ""
+},
+"sankt moritz": {
+"lat": 46.4855,
+"lon": 9.83355,
+"place": "St. Moritz",
 "plz": ""
 },
 "siders": {
