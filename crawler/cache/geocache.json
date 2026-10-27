@@ -29,6 +29,12 @@
 "place": "Genf",
 "plz": ""
 },
+"kanton aargau": {
+"lat": 47.31525,
+"lon": 9.34957,
+"place": "Gonten",
+"plz": ""
+},
 "kanton basel-landschaft": null,
 "kanton bern": {
 "lat": 46.95456,
