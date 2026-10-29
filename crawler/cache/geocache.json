@@ -29,6 +29,12 @@
 "place": "Genf",
 "plz": ""
 },
+"gurwolf": {
+"lat": 46.90517,
+"lon": 7.10507,
+"place": "Gurwolf",
+"plz": ""
+},
 "kanton aargau": {
 "lat": 47.31525,
 "lon": 9.34957,
@@ -49,6 +55,12 @@
 "plz": ""
 },
 "kanton graubünden": {
+"lat": 47.31525,
+"lon": 9.34957,
+"place": "Gonten",
+"plz": ""
+},
+"kanton jura": {
 "lat": 47.31525,
 "lon": 9.34957,
 "place": "Gonten",
@@ -82,6 +94,12 @@
 "lat": 47.37721,
 "lon": 8.52731,
 "place": "Zürich",
+"plz": ""
+},
+"neuenburg": {
+"lat": 47.02097,
+"lon": 6.94808,
+"place": "Neuenburg",
 "plz": ""
 },
 "pruntrut": {
