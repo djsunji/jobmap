@@ -1,4 +1,10 @@
 {
+"bern": {
+"lat": 46.95456,
+"lon": 7.42068,
+"place": "Bern",
+"plz": ""
+},
 "biel": {
 "lat": 47.14949,
 "lon": 7.26901,
@@ -112,6 +118,12 @@
 "lat": 47.02097,
 "lon": 6.94808,
 "place": "Neuenburg",
+"plz": ""
+},
+"nugle-bäntlion": {
+"lat": 47.46948,
+"lon": 7.69333,
+"place": "Nuglar-St. Pantaleon",
 "plz": ""
 },
 "pruntrut": {
