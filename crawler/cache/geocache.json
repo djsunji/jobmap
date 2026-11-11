@@ -108,6 +108,12 @@
 "place": "Gonten",
 "plz": ""
 },
+"kanton zug": {
+"lat": 47.15155,
+"lon": 8.52127,
+"place": "Zug",
+"plz": ""
+},
 "kanton zürich": {
 "lat": 47.37721,
 "lon": 8.52731,
