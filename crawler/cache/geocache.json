@@ -84,6 +84,12 @@
 "place": "Neuenburg",
 "plz": ""
 },
+"kanton solothurn": {
+"lat": 47.20806,
+"lon": 7.5298,
+"place": "Solothurn",
+"plz": ""
+},
 "kanton tessin": {
 "lat": 47.31525,
 "lon": 9.34957,
