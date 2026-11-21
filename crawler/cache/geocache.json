@@ -84,10 +84,22 @@
 "place": "Neuenburg",
 "plz": ""
 },
+"kanton schaffhausen": {
+"lat": 47.71886,
+"lon": 8.64022,
+"place": "Schaffhausen",
+"plz": ""
+},
 "kanton solothurn": {
 "lat": 47.20806,
 "lon": 7.5298,
 "place": "Solothurn",
+"plz": ""
+},
+"kanton st.gallen": {
+"lat": 47.42358,
+"lon": 9.38851,
+"place": "St. Gallen",
 "plz": ""
 },
 "kanton tessin": {
