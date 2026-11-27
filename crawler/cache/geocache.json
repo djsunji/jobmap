@@ -204,10 +204,22 @@
 "place": "St. Gallen",
 "plz": ""
 },
+"volketswil": {
+"lat": 47.39486,
+"lon": 8.68196,
+"place": "Volketswil",
+"plz": ""
+},
 "weinfelden": {
 "lat": 47.56858,
 "lon": 9.10549,
 "place": "Weinfelden",
+"plz": ""
+},
+"zürich": {
+"lat": 47.37721,
+"lon": 8.52731,
+"place": "Zürich",
 "plz": ""
 }
 }
